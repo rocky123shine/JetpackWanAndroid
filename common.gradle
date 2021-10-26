@@ -1,0 +1,115 @@
+import com.rocky.config.*
+
+project.ext {
+    libs = [
+            "appcompat"       : "androidx.appcompat:appcompat:${Versions.appCompat}",
+            "k-stdlib"        : "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}",
+            "ktx"             : "androidx.core:core-ktx:${Versions.coreKtx}",
+            "material"        : "com.google.android.material:material:${Versions.material}",
+            "constraintlayout": "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}",
+            "arouter"         : "com.alibaba:arouter-api:${Versions.arouter}"
+    ]
+
+    apts = [
+            "ARouterCompiler": "com.alibaba:arouter-compiler:${Versions.arouter}",
+    ]
+
+    // 专门用来设置application module的
+    setAppDefaultConfig = {
+        project ->
+            project.apply plugin: "com.android.application"
+            project.apply plugin: "kotlin-android"
+            setAndroidConfig project.android
+            setDependencies project.dependencies
+    }
+
+    setAndroidConfig = {
+        android ->
+            android.compileSdkVersion Configs.compileSdkVersion
+
+            android.defaultConfig {
+                minSdkVersion Configs.minSdkVersion
+                targetSdkVersion Configs.targetSdkVersion
+                versionCode Configs.versionCode
+                versionName Configs.versionName
+
+                if (project.name == 'app') {
+                    applicationId Configs.applicationId
+                } else if (Configs.isModuleDebug) {
+                    applicationId Configs.applicationId
+                    applicationIdSuffix = project.name
+                }
+
+                testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+                javaCompileOptions {
+                    annotationProcessorOptions {
+                        // 路由每个模块的名称
+                        arguments += [AROUTER_MODULE_NAME: project.name]
+                    }
+                }
+            }
+
+            android.buildTypes {
+                release {
+                    minifyEnabled false
+                    proguardFiles android.getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+                }
+            }
+            android.compileOptions {
+                sourceCompatibility JavaVersion.VERSION_1_8
+                targetCompatibility JavaVersion.VERSION_1_8
+            }
+            android.kotlinOptions {
+                jvmTarget = '1.8'
+            }
+
+            android.sourceSets {
+                main {
+                    if (project.name != 'app') {
+                        if (Configs.isModuleDebug) {
+                            manifest.srcFile "src/debug/AndroidManifest.xml"
+                        } else {
+                            manifest.srcFile "src/main/AndroidManifest.xml"
+                        }
+                    }
+                }
+            }
+    }
+
+    // 专门为library情况下进行配置
+    setLibDefalutConfig = {
+        project.apply plugin: "com.android.library"
+        project.apply plugin: "kotlin-android"
+        setAndroidConfig project.android
+        setDependencies project.dependencies
+    }
+
+    setDependencies = {
+        dependencies ->//注意 groovy的闭包语法  this delegate 的区别
+            delegate = dependencies
+            project.libs.each {
+                k, v -> implementation v
+            }
+            project.apts.each {
+                k, v -> annotationProcessor v
+            }
+            testImplementation 'junit:junit:4.+'
+            androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+            androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+            //在这里可以配置 项目之间的相互依赖
+//            if (project.name == 'app' && !Configs.isModuleDebug) {
+//                implementation project('XXX'
+//                implementation project('XXXX')
+//            }
+    }
+
+}
+//引入此文件之后  这个是build的开始
+if (project.name == 'app' || Configs.isModuleDebug) {
+    // 除了app以外，还有组件调试的情况，就直接调用setAppDefaultConfig
+    project.setAppDefaultConfig project
+} else {
+    project.setLibDefalutConfig project
+}
+
+

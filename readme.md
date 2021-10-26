@@ -5,17 +5,27 @@
 ##  切换 gradle 文件为kts文件
 - 项目构建的入口是 settings 所以 先切换settings
 - 操作方式：
-    1. 复制一份settings.gradle  后缀添加.kts
-    2. 设置项目全局仓库依赖
-    3. 加载kts脚本支持  直接同步即可
-    4. groovy 语法和kts很像  只是kts 换成了方法调用如include  kts 使用的是include(":app")
+  1. 复制一份settings.gradle  后缀添加.kts
+  2. 设置项目全局仓库依赖
+  3. 加载kts脚本支持  直接同步即可
+  4. groovy 语法和kts很像  只是kts 换成了方法调用如include  kts 使用的是include(":app")
 - 跟项目的build.gradle 改造
   切换技巧
-    1. 重命名build.gradle 文件  后缀加上.kts
-    2. 内容 单引号换成双引号 赋值换成等号，其他 化成方法调用 加上（）
+  1. 重命名build.gradle 文件  后缀加上.kts
+  2. 内容 单引号换成双引号 赋值换成等号，其他 化成方法调用 加上（）
 
 - kts 和groovy 最大的区别是 tsak的声明了  kts 需要使用tasks.regist 来注册task
 ## 抽取gradle配置文件 以做版本控制和依赖版本管理
+平时我们做多模块开发 一般都会把一些常用的配置参数 例如版本号 版本名称，依赖版本号等抽取成一个config.gradle 然后在module中apply，如果你现在也按照原来的gradle的思路来  你会惊讶的发现 ext 不存在了 同时出现了一个extra的参数  他的使用方式 网上有很多，在这里不在讨论，我们选择另一种方式  buildSrc 方式
+***熟悉gradle的插件的一看到buildSrc 马上就会联想到gralde插件***
+这次咱们就是利用了buildSrc的自动配置到项目的每一个module中的特性 来实现共用参数的配置
 
-    
-  
+## 关于gradle 和 kts文件的说明
+原本想全部使用kts 但是尝试很久无法实现最终一个文件配置所有module的效果
+最终使用了折衷的方式 kts 配合 gradle文件
+###  全部使用kts遇到的问题
+      1. kts文件声明之后 不能被复写
+          例如  配置android的属性时候 每个module 不一样 具体的要复写来实现具体功能 
+      2. 现在还存在的问题  android{} 闭包依然不能复写 现在只是使用groovy的动态的特性给每个project 设置了扩展 android{}
+      
+      

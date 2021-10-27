@@ -7,7 +7,13 @@ project.ext {
             "ktx"             : "androidx.core:core-ktx:${Versions.coreKtx}",
             "material"        : "com.google.android.material:material:${Versions.material}",
             "constraintlayout": "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}",
-            "arouter"         : "com.alibaba:arouter-api:${Versions.arouter}"
+            "arouter"         : "com.alibaba:arouter-api:${Versions.arouter}",
+            "navigationFrag"  : "androidx.navigation:navigation-fragment-ktx:${Versions.navVersion}",
+            "navigationUi"    : "androidx.navigation:navigation-ui-ktx:${Versions.navVersion}",
+
+            "immersion_bar" : "com.gyf.immersionbar:immersionbar:${Versions.immersion_bar_version}",
+            "immersion_bar_ktx" : "com.gyf.immersionbar:immersionbar-ktx:${Versions.immersion_bar_version}"
+
     ]
 
     apts = [
@@ -35,7 +41,7 @@ project.ext {
 
                 if (project.name == 'app') {
                     applicationId Configs.applicationId
-                } else if (Configs.isModuleDebug) {
+                } else if (Configs.isModuleDebug && !project.name.contains('lib')) {
                     applicationId Configs.applicationId
                     applicationIdSuffix = project.name
                 }
@@ -77,7 +83,8 @@ project.ext {
 
             //开启dataBinding
             android.buildFeatures {
-                dataBinding = true
+//                dataBinding = true
+                viewBinding = true
             }
     }
 
@@ -110,11 +117,16 @@ project.ext {
 
 }
 //引入此文件之后  这个是build的开始
-if (project.name == 'app' || Configs.isModuleDebug) {
-    // 除了app以外，还有组件调试的情况，就直接调用setAppDefaultConfig
+println "-------${project.name}"
+if (project.name == 'app' || (Configs.isModuleDebug && !project.name.contains('lib'))) {
+    // 除了app lib 下的以外，还有组件调试的情况，就直接调用setAppDefaultConfig
+    println "-------APP-----${project.name}"
+
     project.setAppDefaultConfig project
 } else {
     project.setLibDefalutConfig project
+    println "-------业务-----${project.name}"
+
 }
 
 

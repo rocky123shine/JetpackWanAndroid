@@ -74,6 +74,11 @@ project.ext {
                     }
                 }
             }
+
+            //开启dataBinding
+            android.buildFeatures {
+                dataBinding = true
+            }
     }
 
     // 专门为library情况下进行配置

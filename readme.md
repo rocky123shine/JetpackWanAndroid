@@ -27,5 +27,21 @@
       1. kts文件声明之后 不能被复写
           例如  配置android的属性时候 每个module 不一样 具体的要复写来实现具体功能 
       2. 现在还存在的问题  android{} 闭包依然不能复写 现在只是使用groovy的动态的特性给每个project 设置了扩展 android{}
+
+
+### 新建开发分支 dev
+
+### 主页框架搭建
+![](imgs/home_kj.png)
+- 主页一个Activity 五个fragment 使用navigation管理fragment
+  - Home
+  - System
+  - binews
+  - project
+  - mine
+
+- 状态栏三方依赖引入 统一状态栏颜色
+
+
       
       

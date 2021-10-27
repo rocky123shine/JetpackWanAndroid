@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/fragHome"
+        android:icon="@drawable/icon_home"
+        android:title="@string/home" />
+    <item
+        android:id="@+id/systemFragment"
+        android:icon="@drawable/icon_vector_system"
+        android:title="@string/s_system" />
+    <item
+        android:id="@+id/bjNewsFragment"
+        android:icon="@drawable/icon_vector_bjnews"
+        android:title="@string/bjnews" />
+    <item
+        android:id="@+id/projectFragment"
+        android:icon="@drawable/icon_vector_project"
+        android:title="@string/s_project" />
+    <item
+        android:id="@+id/mineFragment"
+        android:icon="@drawable/icon_vector_my"
+        android:title="@string/mine" />
+
+</menu>

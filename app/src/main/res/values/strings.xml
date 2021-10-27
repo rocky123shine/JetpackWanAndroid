@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">JetpackWanAndroid</string>
+    <string name="home">首页</string>
+    <string name="s_system">体系</string>
+    <string name="bjnews">公众号</string>
+    <string name="s_project">项目</string>
+    <string name="mine">我的</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

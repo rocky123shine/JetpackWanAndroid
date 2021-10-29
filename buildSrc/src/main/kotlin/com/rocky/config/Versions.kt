@@ -13,6 +13,7 @@ object Versions {
     const val androidxJUnit = "1.1.2"
     const val navVersion = "2.3.5"
     const val immersion_bar_version = "3.0.0"
+    const val smart_refresh_version = "2.0.1"
 
 
 

@@ -2,17 +2,29 @@ import com.rocky.config.*
 
 project.ext {
     libs = [
-            "appcompat"       : "androidx.appcompat:appcompat:${Versions.appCompat}",
-            "k-stdlib"        : "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}",
-            "ktx"             : "androidx.core:core-ktx:${Versions.coreKtx}",
-            "material"        : "com.google.android.material:material:${Versions.material}",
-            "constraintlayout": "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}",
-            "arouter"         : "com.alibaba:arouter-api:${Versions.arouter}",
-            "navigationFrag"  : "androidx.navigation:navigation-fragment-ktx:${Versions.navVersion}",
-            "navigationUi"    : "androidx.navigation:navigation-ui-ktx:${Versions.navVersion}",
+            "appcompat"                    : "androidx.appcompat:appcompat:${Versions.appCompat}",
+            "k-stdlib"                     : "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlin}",
+            "ktx"                          : "androidx.core:core-ktx:${Versions.coreKtx}",
+            "material"                     : "com.google.android.material:material:${Versions.material}",
+            "constraintlayout"             : "androidx.constraintlayout:constraintlayout:${Versions.constraintLayout}",
+            "arouter"                      : "com.alibaba:arouter-api:${Versions.arouter}",
+            "navigationFrag"               : "androidx.navigation:navigation-fragment-ktx:${Versions.navVersion}",
+            "navigationUi"                 : "androidx.navigation:navigation-ui-ktx:${Versions.navVersion}",
 
-            "immersion_bar" : "com.gyf.immersionbar:immersionbar:${Versions.immersion_bar_version}",
-            "immersion_bar_ktx" : "com.gyf.immersionbar:immersionbar-ktx:${Versions.immersion_bar_version}"
+            "immersion_bar"                : "com.gyf.immersionbar:immersionbar:${Versions.immersion_bar_version}",
+            "immersion_bar_ktx"            : "com.gyf.immersionbar:immersionbar-ktx:${Versions.immersion_bar_version}",
+            "smart_refresh"                : "com.scwang.smart:refresh-layout-kernel:${Versions.smart_refresh_version}",
+            "smart_refresh_header_classics": "com.scwang.smart:refresh-header-classics:${Versions.smart_refresh_version}",
+            "smart_refresh_footer_classics": "com.scwang.smart:refresh-footer-classics:${Versions.smart_refresh_version}",
+            "kotlin_serialization"         : "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1",
+            "logger"                       : "com.orhanobut:logger:2.2.0",
+
+            "coil"                         : "io.coil-kt:coil:${Versions.coil_version}",
+            "coil_base"                    : "io.coil-kt:coil-base:${Versions.coil_version}",
+            "coil_gif"                     : "io.coil-kt:coil-gif:${Versions.coil_version}",
+            "coil_svg"                     : "io.coil-kt:coil-svg:${Versions.coil_version}",
+            "coil_video"                   : "io.coil-kt:coil-video:${Versions.coil_version}"
+
 
     ]
 
@@ -25,6 +37,8 @@ project.ext {
         project ->
             project.apply plugin: "com.android.application"
             project.apply plugin: "kotlin-android"
+            project.apply plugin: "koin"
+            project.apply plugin: "org.jetbrains.kotlin.plugin.serialization"
             setAndroidConfig project.android
             setDependencies project.dependencies
     }
@@ -68,10 +82,39 @@ project.ext {
             android.kotlinOptions {
                 jvmTarget = '1.8'
             }
-
+//            if (project.name == 'app') {//设置变体
+            android.flavorDimensions("version")
+            android.productFlavors {
+                create("onlie") {
+                    setDimension("version")
+                    // 版本名后缀
+                    versionNameSuffix = "_online"
+                    // 是否使用线上环境
+                    buildConfigField("boolean", "IS_ONLINE_ENV", "true")
+                }
+                create("devTest") {
+                    setDimension("version")
+                    // 应用包名后缀
+                    if (project.name == 'app') applicationIdSuffix = ".devTest"
+                    // 版本名后缀
+                    versionNameSuffix = "_devTest"
+                    // 是否使用线上环境
+                    buildConfigField("boolean", "IS_ONLINE_ENV", "false")
+                }
+                create("dev") {
+                    setDimension("version")
+                    // 应用包名后缀
+                    if (project.name == 'app') applicationIdSuffix = ".dev"
+                    // 版本名后缀
+                    versionNameSuffix = "_dev"
+                    // 是否使用线上环境
+                    buildConfigField("boolean", "IS_ONLINE_ENV", "false")
+                }
+            }
+//            }
             android.sourceSets {
                 main {
-                    if (project.name != 'app') {
+                    if (project.name != 'app' && !project.name.contains('lib')) {
                         if (Configs.isModuleDebug) {
                             manifest.srcFile "src/debug/AndroidManifest.xml"
                         } else {
@@ -92,6 +135,8 @@ project.ext {
     setLibDefalutConfig = {
         project.apply plugin: "com.android.library"
         project.apply plugin: "kotlin-android"
+        project.apply plugin: "koin"
+        project.apply plugin: "org.jetbrains.kotlin.plugin.serialization"
         setAndroidConfig project.android
         setDependencies project.dependencies
     }

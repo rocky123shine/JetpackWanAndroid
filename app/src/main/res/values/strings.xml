@@ -8,4 +8,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="app_search">搜索</string>
+
+    <!-- 黄金比例 -->
+    <string name="app_golden_ratio_horizontal">1:0.618</string>
+    <string name="app_golden_ratio_vertical">0.618:1</string>
 </resources>

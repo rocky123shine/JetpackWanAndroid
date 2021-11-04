@@ -77,6 +77,10 @@ Model+View+ViewModel+Repository
 
 - 在lib_base封装网络工具
   - 封装网络请求返回的数据基类   NetResult
+  - 使用koin 实现注入
+  - 数据解析使用 kotlinx.serialization
+  - 网络结构 Koin+okhttp+retrofit+serialization+Coroutine
+  
 
       
       

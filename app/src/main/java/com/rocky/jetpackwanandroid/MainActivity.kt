@@ -18,9 +18,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         immersionBar {
-            statusBarColor(R.color.theme_color)
+           // statusBarColor(R.color.theme_color)
             statusBarDarkFont(false)
-            fitsSystemWindows(true)
+           // fitsSystemWindows(true)
             initImmersionbar(this)
             addTag(javaClass.simpleName)
         }

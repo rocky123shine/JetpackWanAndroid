@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.JetpackWanAndroid" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.JetpackWanAndroid" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- 应用主色调，ActionBar 等默认颜色 -->
         <item name="colorPrimary">@color/app_colorPrimary</item>
         <!-- 应用主要暗色调，StatusBar 默认颜色 -->

@@ -14,7 +14,10 @@ object Versions {
     const val navVersion = "2.3.5"
     const val immersion_bar_version = "3.0.0"
     const val smart_refresh_version = "2.0.1"
-
+    const val retrofit_version = "2.9.0"
+    const val koin_version = "2.2.1"
+    const val okhttp_version = "4.9.0"
+    const val coil_version = "1.1.0"
 
 
 }
